@@ -32,17 +32,33 @@ const stopVideo = () => {
 
 // Update progress and the timestamp
 const updateProgress = () => {
-  return true;
+  progress.value = (video.currentTime / video.duration) * 100;
+
+  // Get minutes
+  let minutes = Math.floor(video.currentTime / 60);
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  // Get seconds
+  let seconds = Math.floor(video.currentTime % 60);
+  if (seconds < 10) {
+    seconds = `0${seconds}`;
+  }
+
+  timestamp.innerHTML = `${minutes}:${seconds}`;
 };
 
 // Set video time to progress
-const setVideoProgress = () => {};
+const setVideoProgress = () => {
+  video.currentTime = (+progress.value * video.duration) / 100;
+};
 
 /************** EVENT LISTENERS **************/
 video.addEventListener('click', toggleVideoStatus);
 video.addEventListener('play', updatePlayIcon);
 video.addEventListener('pause', updatePlayIcon);
-video.addEventListener('click', updateProgress);
+video.addEventListener('timeupdate', updateProgress);
 
 play.addEventListener('click', toggleVideoStatus);
 
